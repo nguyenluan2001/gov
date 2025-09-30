@@ -14,6 +14,7 @@ import (
 )
 
 type App struct {
+	TempPath string `json:"tempPath"`
 	RootPath string `json:"rootPath"`
 }
 type model struct {
@@ -109,9 +110,12 @@ func initialModel() model {
 }
 
 func main() {
+	cwd, _ := os.Getwd()
 	app := App{
-		RootPath: "./.gov",
+		TempPath: path.Join(cwd, ".gov"),
+		RootPath: cwd,
 	}
+	fmt.Println("app", app)
 	// p := tea.NewProgram(initialModel())
 	// if _, err := p.Run(); err != nil {
 	// 	fmt.Printf("Alas, there's been an error: %v", err)
@@ -120,14 +124,14 @@ func main() {
 
 	osName := utils.GetOs()
 	arch := utils.GetArch()
-	version := "go1.25.1"
+	version := "go1.23.10"
 	fmt.Println(osName, arch)
 
 	//Download file
 	filename := utils.GetFilename(strings.TrimSpace(osName), strings.TrimSpace(arch), version)
 	downloadPath := utils.GetDownloadPath(strings.TrimSpace(osName), strings.TrimSpace(arch), version)
 	fmt.Println("downloadPath", downloadPath)
-	filepath := path.Join(app.RootPath, filename)
+	filepath := path.Join(app.TempPath, filename)
 	file, err := os.Create(filepath)
 
 	if err != nil {
@@ -140,6 +144,6 @@ func main() {
 		log.Fatalln("Download file failed")
 	}
 	io.Copy(file, resp.Body)
-	utils.UnTarFile(filepath)
-
+	extractErr := utils.UnTarFile(app.RootPath, app.TempPath, filepath)
+	fmt.Println("extractErr", extractErr)
 }

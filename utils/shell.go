@@ -1,8 +1,11 @@
 package utils
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"os/exec"
+	"time"
 )
 
 func GetOs() string {
@@ -27,8 +30,12 @@ func GetArch() string {
 	return string(arch)
 }
 
-func UnTarFile(path string) error {
+func UnTarFile(backUrl, extractToUrl, path string) error {
+	os.Chdir(extractToUrl)
 	cmd := exec.Command("tar", "-xvzf", path)
-	_, err := cmd.Output()
+	output, err := cmd.Output()
+	fmt.Println("UnTarFile", string(output), backUrl, extractToUrl)
+	time.Sleep(5 * time.Second)
+	os.Chdir(backUrl)
 	return err
 }
