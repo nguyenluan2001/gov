@@ -124,7 +124,8 @@ func main() {
 
 	osName := utils.GetOs()
 	arch := utils.GetArch()
-	version := "go1.23.10"
+	// version := "go1.23.10"
+	version := "go1.24.7"
 	fmt.Println(osName, arch)
 
 	//Download file
@@ -144,6 +145,6 @@ func main() {
 		log.Fatalln("Download file failed")
 	}
 	io.Copy(file, resp.Body)
-	extractErr := utils.UnTarFile(app.RootPath, app.TempPath, filepath)
+	extractErr := utils.UnTarFile(app.RootPath, app.TempPath, version, filepath)
 	fmt.Println("extractErr", extractErr)
 }

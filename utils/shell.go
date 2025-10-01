@@ -30,12 +30,17 @@ func GetArch() string {
 	return string(arch)
 }
 
-func UnTarFile(backUrl, extractToUrl, path string) error {
+func UnTarFile(backUrl, extractToUrl, folderName, path string) error {
 	os.Chdir(extractToUrl)
-	cmd := exec.Command("tar", "-xvzf", path)
+	os.Mkdir(folderName, 0777)
+	cmd := exec.Command("tar", "-xvzf", path, "--directory", folderName, "--strip-components=1")
 	output, err := cmd.Output()
 	fmt.Println("UnTarFile", string(output), backUrl, extractToUrl)
 	time.Sleep(5 * time.Second)
 	os.Chdir(backUrl)
 	return err
+}
+
+func CreateSymbolLink(source, target string) {
+	//ln -s /app/.gov/go1.24.7 /app/.gov/current
 }
