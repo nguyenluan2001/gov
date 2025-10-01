@@ -43,4 +43,24 @@ func UnTarFile(backUrl, extractToUrl, folderName, path string) error {
 
 func CreateSymbolLink(source, target string) {
 	//ln -s /app/.gov/go1.24.7 /app/.gov/current
+	unlinkCmd := exec.Command("unlink", target)
+	unlinkCmd.Output()
+	cmd := exec.Command("ln", "-s", source, target)
+	cmd.Output()
+}
+
+func SourceFile(path string) {
+	cmd := exec.Command("source", path)
+	cmd.Output()
+}
+
+func UpdateBashrc(content, bashrcPath string) {
+	file, err := os.OpenFile(bashrcPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		log.Fatalln("Open file failed.", err)
+	}
+	file.WriteString(content)
+	defer file.Close()
+	SourceFile(bashrcPath)
 }
