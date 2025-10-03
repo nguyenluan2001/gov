@@ -35,7 +35,7 @@ func main() {
 			app.InstallCmd(CLI.Install.Version)
 
 			bashrcPath := path.Join(app.HomePath, ".bashrc")
-			utils.UpdateBashrc(fmt.Sprintf("export PATH=%s:$PATH\n", path.Join(app.TempPath, "current", "bin")), bashrcPath)
+			utils.UpdateBashrc(fmt.Sprintf("export PATH=%s:$PATH\n", path.Join(app.TempPath, "bin")), bashrcPath)
 		}
 	case "use <version>":
 		{

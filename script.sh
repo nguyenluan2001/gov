@@ -17,9 +17,9 @@ function run(){
     --mount type=bind,source=./go.sum,target=/app/go.sum \
     --mount type=bind,source=./utils/,target=/app/utils \
     --mount type=bind,source=./controller/,target=/app/controller \
-    --mount type=bind,source=./${gov_path}/,target=/app/.gov \
     -it --name gov-container \
     gov-img
+    # --mount type=bind,source=./${gov_path}/,target=/app/.gov \
 }
 
 function build(){

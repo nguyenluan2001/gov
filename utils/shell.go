@@ -50,8 +50,8 @@ func CreateSymbolLink(source, target string) {
 }
 
 func SourceFile(path string) {
-	cmd := exec.Command("source", path)
-	cmd.Output()
+	cmd := exec.Command("bash", "-i", "-c", "source ~/.bashrc")
+	cmd.Run()
 }
 
 func UpdateBashrc(content, bashrcPath string) {

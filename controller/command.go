@@ -32,7 +32,7 @@ func (app *App) InstallCmd(version string) {
 	filename := utils.GetFilename(strings.TrimSpace(osName), strings.TrimSpace(arch), version)
 	downloadPath := utils.GetDownloadPath(strings.TrimSpace(osName), strings.TrimSpace(arch), version)
 	fmt.Println("downloadPath", downloadPath)
-	filepath := path.Join(app.TempPath, filename)
+	filepath := path.Join(app.TempPath, "gos", filename)
 	file, err := os.Create(filepath)
 
 	if err != nil {
@@ -45,14 +45,15 @@ func (app *App) InstallCmd(version string) {
 		log.Fatalln("Download file failed")
 	}
 	io.Copy(file, resp.Body)
-	extractErr := utils.UnTarFile(app.RootPath, app.TempPath, version, filepath)
+	extractToUrl := path.Join(app.TempPath, "gos")
+	extractErr := utils.UnTarFile(app.RootPath, extractToUrl, version, filepath)
 	fmt.Println("extractErr", extractErr)
 	if extractErr != nil {
 		log.Fatalln("Download file failed")
 	}
 
-	sourceUrl := path.Join(app.TempPath, version)
-	targetUrl := path.Join(app.TempPath, "current")
+	sourceUrl := path.Join(app.TempPath, "gos", version, "bin/go")
+	targetUrl := path.Join(app.TempPath, "bin", "go")
 	utils.CreateSymbolLink(sourceUrl, targetUrl)
 	os.Remove(filepath)
 }
